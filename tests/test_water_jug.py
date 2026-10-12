@@ -1,27 +1,26 @@
-from src.water_jug_solver import water_jug_bfs
-
+from src.water_jug_solver import water_jug_bfs, water_jug_search
+import pytest
 
 def test_4_3_target_2():
     solution = water_jug_bfs(4, 3, 2)
-
     assert solution is not None
-
     final_state = solution[-1][0]
-
     assert final_state[0] == 2 or final_state[1] == 2
-
 
 def test_3_5_target_4():
     solution = water_jug_bfs(3, 5, 4)
-
     assert solution is not None
-
     final_state = solution[-1][0]
-
     assert final_state[0] == 4 or final_state[1] == 4
 
-
 def test_impossible_target():
-    solution = water_jug_bfs(2, 4, 3)
+    assert water_jug_bfs(2, 4, 3) is None
 
-    assert solution is None
+def test_invalid_capacity():
+    with pytest.raises(ValueError):
+        water_jug_bfs(0, 4, 2)
+
+def test_search_statistics():
+    result = water_jug_search(4, 3, 2, "bfs")
+    assert result["generated"] >= 1
+    assert result["strategy"] == "bfs"
